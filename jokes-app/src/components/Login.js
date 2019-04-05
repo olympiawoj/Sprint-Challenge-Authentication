@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-class Signup extends React.Component {
+class Login extends React.Component {
   state = {
     credentials: {
       username: "",
@@ -20,20 +20,20 @@ class Signup extends React.Component {
 
   handleSignup = e => {
     e.preventDefault();
-    const endpoint = "http://localhost:3300/api/register";
+    const endpoint = "http://localhost:3300/api/login";
     axios
       .post(endpoint, this.state.credentials)
       .then(res => {
-        console.log("SIGNUP RESPONSE", res);
+        console.log("LOGIN RESPONSE", res);
         // localStorage.setItem("token", res.data.token);
       })
-      .catch(error => console.log("SIGNUP ERROR", error));
+      .catch(error => console.log("LOGIN ERROR", error));
   };
 
   render() {
     return (
       <div className="signup-form">
-        <h1>Signup Form</h1>
+        <h1>Login Form</h1>
         <form className="form" onSubmit={this.handleSignup}>
           <label htmlFor="username">Account</label>
           <input
@@ -59,4 +59,4 @@ class Signup extends React.Component {
   }
 }
 
-export default Signup;
+export default Login;
