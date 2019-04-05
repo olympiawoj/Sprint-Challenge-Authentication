@@ -22,7 +22,7 @@ class Signup extends React.Component {
     e.preventDefault();
     const endpoint = "http://localhost:3300/api/register";
     axios
-      .post(endpoint, this.state)
+      .post(endpoint, this.state.credentials)
       .then(res => {
         console.log("LOGIN RESPONSE", res);
         // localStorage.setItem("token", res.data.token);
