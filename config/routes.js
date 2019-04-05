@@ -3,13 +3,8 @@ const db = require("../database/dbConfig.js");
 const { authenticate } = require("../auth/authenticate");
 
 module.exports = server => {
-  server.post("/api/login", login);
   server.get("/api/jokes", authenticate, getJokes);
 };
-
-function login(req, res) {
-  // implement user login
-}
 
 function getJokes(req, res) {
   const requestOptions = {
