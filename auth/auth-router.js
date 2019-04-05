@@ -1,9 +1,12 @@
 const router = require("express").Router();
 const Users = require("../config/users-model");
+const bcrypt = require("bcryptjs");
 
 //REGISTER:    implement user registration
 router.post("/register", async (req, res) => {
   let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 8);
+  user.password = hash;
   console.log(user);
   try {
     const saved = await Users.add(user);
