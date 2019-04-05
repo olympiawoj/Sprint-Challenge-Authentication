@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Users = require("../config/users-model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 //REGISTER:    implement user registration
 router.post("/register", async (req, res) => {
@@ -25,9 +26,17 @@ router.post("/login", async (req, res) => {
     if (username && password) {
       console.log("both");
       const user = await Users.findBy({ username });
-      res.status(200).json({ message: `Welcome ${user.username}` });
+      const token = generateToken(user);
+
+      if (user && bcrypt.compareSync(password, user.password)) {
+        res.status(200).json({ message: `Welcome ${user.username}`, token });
+      } else {
+        res.status(401).json({ message: "Invalid credentials" });
+      }
     } else {
-      res.status(401).json({ message: "Invalid credentials" });
+      res
+        .status(401)
+        .json({ message: "Please include a username and password" });
     }
   } catch (error) {
     console.log(error);
@@ -35,4 +44,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//Generate Token
+function generateToken(user) {
+  const payload = {
+    subject: user.id,
+    username: user.username
+  };
+  const secret = "secret";
+  const options = {
+    expiresIn: "1d"
+  };
+  return jwt.sign(payload, secret, options);
+}
 module.exports = router;
